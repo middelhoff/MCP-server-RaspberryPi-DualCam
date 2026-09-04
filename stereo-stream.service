@@ -1,0 +1,14 @@
+[Unit]
+Description=Stereo MJPEG streamer (dual IMX219) - holds both sensors open on :8001
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=seb
+WorkingDirectory=/home/seb/stereo-mcp
+ExecStart=/home/seb/stereo-mcp/venv/bin/python /home/seb/stereo-mcp/stream.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

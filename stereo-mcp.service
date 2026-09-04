@@ -1,0 +1,19 @@
+[Unit]
+Description=Stereo camera + ultrasonic MCP server on :8000
+After=network-online.target stereo-stream.service
+Wants=network-online.target
+# Prefer the streamer for frames, but the server falls back to rpicam-still
+# if it is absent, so this is Wants (soft), not Requires.
+Wants=stereo-stream.service
+
+[Service]
+User=seb
+WorkingDirectory=/home/seb/stereo-mcp
+ExecStart=/home/seb/stereo-mcp/venv/bin/python /home/seb/stereo-mcp/server.py
+Restart=always
+RestartSec=3
+# Give the streamer a moment to claim the cameras first.
+ExecStartPre=/bin/sleep 2
+
+[Install]
+WantedBy=multi-user.target
